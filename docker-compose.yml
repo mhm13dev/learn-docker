@@ -9,8 +9,9 @@ services:
     working_dir: /app
     environment:
       FILE: .env
-    ports:
-      - 5000:5000
+    scale: 2
+    expose:
+      - '5000'
     # command: sh -c "npm run dev"
     command: sh -c "npm install && npm start"
   mongo:
@@ -18,6 +19,14 @@ services:
     restart: always
     volumes:
       - learn-docker-db:/data/db
-
+  nginx:
+    image: nginx:stable
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+    depends_on:
+      - app
+    ports:
+      - '4000:4000'
 volumes:
   learn-docker-db:
+# https://pspdfkit.com/blog/2018/how-to-use-docker-compose-to-run-multiple-instances-of-a-service-in-development/
