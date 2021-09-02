@@ -1,0 +1,23 @@
+version: '3.8'
+
+services:
+  app:
+    image: node:16-alpine
+    restart: always
+    volumes:
+      - ./:/app
+    working_dir: /app
+    environment:
+      FILE: .env
+    ports:
+      - 5000:5000
+    # command: sh -c "npm run dev"
+    command: sh -c "npm install && npm start"
+  mongo:
+    image: mongo:5-focal
+    restart: always
+    volumes:
+      - learn-docker-db:/data/db
+
+volumes:
+  learn-docker-db:
